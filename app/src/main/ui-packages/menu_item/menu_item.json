@@ -1,0 +1,320 @@
+{
+  "name": "menu_item",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "Q8LbatttouEhuxOPzDFRMr",
+    "node": "923:1310",
+    "version": "3617585140",
+    "component-id": "3d3da0b9b1f3a9c906fdd81df4371dc36bde219c"
+  },
+  "default": "state=Default",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "Home icon"
+      },
+      {
+        "type": "text",
+        "id": "Home"
+      },
+      {
+        "type": "group",
+        "id": "Group 1525"
+      },
+      {
+        "type": "vector",
+        "id": "Selected"
+      }
+    ],
+    "modes": {
+      "state=Default": {
+        "rules": [
+          {
+            "id": "top_level",
+            "padding": {
+              "left": "16.0",
+              "top": "12.0",
+              "right": "16.0",
+              "bottom": "12.0"
+            },
+            "tap-handler": "$onSelect",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "main-axis-align": "start",
+            "children": [
+              "Home icon",
+              "Home"
+            ],
+            "item-spacing": "8.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "Home icon",
+            "opacity": "100.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": "$icon",
+            "clip-content": "false"
+          },
+          {
+            "id": "Home",
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.1450980392156863"
+            },
+            "text-content": "$label",
+            "overflow": "visible",
+            "letter-spacing": "0.10000000149011612",
+            "line-height": "1.4285714721679688",
+            "typeface": "Open Sans"
+          }
+        ]
+      },
+      "state=Selected": {
+        "rules": [
+          {
+            "id": "top_level",
+            "padding": {
+              "left": "16.0",
+              "top": "12.0",
+              "right": "16.0",
+              "bottom": "12.0"
+            },
+            "tap-handler": "$onSelect",
+            "children": [
+              "Group 1525",
+              "Home"
+            ],
+            "item-spacing": "8.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "Group 1525",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "64.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "32.0"
+              }
+            },
+            "is-structured": "false",
+            "children": [
+              "Selected",
+              "Home icon"
+            ],
+            "clip-content": "false"
+          },
+          {
+            "id": "Home",
+            "font-weight": "700.0",
+            "color": {
+              "alpha": "1.0",
+              "hue": "243.52941176470586",
+              "saturation": "0.85",
+              "value": "0.0784313725490196"
+            },
+            "text-content": "$label",
+            "overflow": "visible",
+            "letter-spacing": "0.10000000149011612",
+            "line-height": "1.4285714721679688",
+            "typeface": "Open Sans"
+          },
+          {
+            "id": "Selected",
+            "border-radius": "24.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "64.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "32.0"
+              }
+            },
+            "vector-content": "selected.svg"
+          },
+          {
+            "id": "Home icon",
+            "opacity": "100.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "20.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "4.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "is-structured": "false",
+            "children": "$icon",
+            "clip-content": "false"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "onSelect": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "icon": {
+      "data-type": "list-item",
+      "required": false,
+      "description": ""
+    },
+    "label": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "state=Default",
+      "size": {
+        "width": 72.0,
+        "height": 76.0
+      },
+      "parameters": {
+        "icon": [
+          {
+            "type": "group",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 24.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 24.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              {
+                "type": "vector",
+                "alignment": {
+                  "horizontal": {
+                    "attachment": "start",
+                    "offset": 2.799999237060547
+                  },
+                  "vertical": {
+                    "attachment": "start",
+                    "offset": 3.669921875
+                  }
+                },
+                "size-constraints": {
+                  "width-constraints": {
+                    "sizing-mode": "fixed",
+                    "value": 18.399999618530273
+                  },
+                  "height-constraints": {
+                    "sizing-mode": "fixed",
+                    "value": 16.66015625
+                  }
+                },
+                "vector-content": "vector.svg"
+              }
+            ],
+            "clip-content": false
+          }
+        ],
+        "label": "Home"
+      }
+    },
+    {
+      "design": "state=Selected",
+      "size": {
+        "width": 72.0,
+        "height": 76.0
+      },
+      "parameters": {
+        "icon": [
+          {
+            "type": "group",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 24.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 24.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              {
+                "type": "vector",
+                "alignment": {
+                  "horizontal": {
+                    "attachment": "start",
+                    "offset": 2.799999237060547
+                  },
+                  "vertical": {
+                    "attachment": "start",
+                    "offset": 3.669921875
+                  }
+                },
+                "size-constraints": {
+                  "width-constraints": {
+                    "sizing-mode": "fixed",
+                    "value": 18.399999618530273
+                  },
+                  "height-constraints": {
+                    "sizing-mode": "fixed",
+                    "value": 16.66015625
+                  }
+                },
+                "vector-content": "vector1.svg"
+              }
+            ],
+            "clip-content": false
+          }
+        ],
+        "label": "Home"
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}
