@@ -1,5 +1,6 @@
 package ir.sharif.library
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
@@ -42,16 +43,16 @@ sealed class BottomNavItem(
 
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route) {
-            Home()
+            Home(paddingValues)
         }
         composable(BottomNavItem.Cart.route) {
-            Cart()
+            Cart(paddingValues)
         }
         composable(BottomNavItem.Favorites.route) {
-            Favorites()
+            Favorites(paddingValues)
         }
     }
 }
