@@ -7,18 +7,21 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "cart_items",
     foreignKeys = [
-        ForeignKey(
-            entity = User::class,
-            parentColumns = ["id"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        ),
+//        ForeignKey(
+//            entity = User::class,
+//            parentColumns = ["id"],
+//            childColumns = ["userId"],
+//            onDelete = ForeignKey.CASCADE
+//        ),
         ForeignKey(
             entity = Book::class,
             parentColumns = ["id"],
             childColumns = ["bookId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        androidx.room.Index(value = ["userId", "bookId"], unique = true)
     ]
 )
 data class CartItem(

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,15 +45,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LibraryApp()
-//            LibraryTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    MainScreenView()
-//                }
-//            }
         }
     }
 }
@@ -78,79 +70,5 @@ fun MainScreenView(homeViewModel: HomeViewModel = viewModel()) {
         }, bottomBar = { NavigationBar(navController = navController) }
     ) {
         NavigationGraph(navController = navController, paddingValues = it)
-    }
-}
-
-
-@Composable
-fun Cart(paddingValues: PaddingValues) {
-    Column(
-        Modifier
-            .padding(paddingValues)
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Text(text = "Cart", style = MaterialTheme.typography.headlineSmall)
-        BooksList(Modifier.weight(1f), showClose = true, showCounter = true)
-        Row {
-            Text(
-                text = "Total",
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = "$50.00",
-                style = MaterialTheme.typography.titleLarge,
-            )
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { },
-            shape = RoundedCornerShape(size = 4.dp)
-        ) {
-            Text(text = "Proceed to Checkout")
-        }
-        Spacer(Modifier.size(0.dp))
-    }
-}
-
-@Composable
-fun BooksList(
-    modifier: Modifier = Modifier,
-    showClose: Boolean = false,
-    showCounter: Boolean = false,
-    books: List<Book> = listOf(
-        Book(
-            title = "book1",
-            author = "seyed",
-            cover = "https://covers.openlibrary.org/b/id/7085472-M.jpg"
-        )
-    )
-) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
-        items(items = books) { book ->
-            BookCard(
-                title = book.title,
-                author = book.title,
-                rate = "4.5/5",
-                showClose = showClose,
-                showCounter = showCounter,
-                cover = rememberAsyncImagePainter(
-                    model = book.cover,
-                ),
-                price = "$30.00"
-            )
-        }
-        item { Spacer(modifier = Modifier.size(0.dp)) }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LibraryTheme {
-        Cart(PaddingValues(0.dp))
     }
 }

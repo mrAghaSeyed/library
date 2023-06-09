@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NamedNavArgument
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,18 +45,21 @@ sealed class BottomNavItem(
     )
 }
 
-
+const val DETAIL_ROUTE = "detail"
 @Composable
 fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route) {
-            Home(paddingValues)
+            Home(paddingValues, hiltViewModel(), navController)
         }
         composable(BottomNavItem.Cart.route) {
-            Cart(paddingValues)
+            Cart(paddingValues, hiltViewModel(), navController)
         }
         composable(BottomNavItem.Favorites.route) {
-            Favorites(paddingValues)
+            Favorites(paddingValues, hiltViewModel(), navController)
+        }
+        composable("$DETAIL_ROUTE/{bookId}") {
+            Text(text = "THE ID IS: ${it.arguments?.getString("bookId")}")
         }
     }
 }

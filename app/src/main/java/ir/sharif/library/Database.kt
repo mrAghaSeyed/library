@@ -1,10 +1,10 @@
 package ir.sharif.library
 
 import android.content.Context
-import android.provider.ContactsContract.Data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.sharif.library.dao.BookDao
 import ir.sharif.library.dao.CartItemDao
 import ir.sharif.library.dao.FavoriteBookDao
@@ -14,9 +14,10 @@ import ir.sharif.library.entities.CartItem
 import ir.sharif.library.entities.FavoriteBook
 import ir.sharif.library.entities.User
 
+
 @Database(
     entities = [(Book::class), (User::class), (FavoriteBook::class), (CartItem::class)],
-    version = 1,
+    version = 5,
     exportSchema = false
 )
 abstract class LibraryDatabase : RoomDatabase() {
@@ -34,13 +35,21 @@ abstract class LibraryDatabase : RoomDatabase() {
         fun getInstance(appContext: Context): LibraryDatabase {
             synchronized(this) {
                 var instance = INSTANCE
+                val rdc: Callback = object : Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                    }
 
+                    override fun onOpen(db: SupportSQLiteDatabase) {
+                        // do something every time database is open
+                    }
+                }
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         appContext,
                         LibraryDatabase::class.java,
                         "library_database"
-                    ).fallbackToDestructiveMigration()
+                    ).addCallback(rdc)
+                        .fallbackToDestructiveMigration()
                         .build()
 
                     INSTANCE = instance

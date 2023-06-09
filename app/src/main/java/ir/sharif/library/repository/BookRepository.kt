@@ -3,8 +3,9 @@ import ir.sharif.library.dao.BookDao
 import ir.sharif.library.entities.Book
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class BookRepository(private val bookDao: BookDao) {
+class BookRepository @Inject constructor(private val bookDao: BookDao) {
     suspend fun insert(book: Book): Long = withContext(Dispatchers.IO) {
         bookDao.insert(book)
     }
@@ -13,11 +14,11 @@ class BookRepository(private val bookDao: BookDao) {
         bookDao.update(book)
     }
 
-    suspend fun getAllBooks(): List<Book> = withContext(Dispatchers.IO) {
+    suspend fun getAllBooks() = withContext(Dispatchers.IO) {
         bookDao.getAllBooks()
     }
 
-    suspend fun getBookById(bookId: Long): Book = withContext(Dispatchers.IO) {
+    suspend fun getBookById(bookId: Long) = withContext(Dispatchers.IO) {
         bookDao.getBookById(bookId)
     }
 }
