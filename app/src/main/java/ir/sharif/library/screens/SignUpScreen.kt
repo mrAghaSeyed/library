@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.sharif.library.AppRouter.AppRouter
 import ir.sharif.library.AppRouter.Screen
 import ir.sharif.library.R
@@ -28,9 +30,11 @@ import ir.sharif.library.components.HeadingTextComponent
 import ir.sharif.library.components.MyTextFieldComponent
 import ir.sharif.library.components.NormalTextComponent
 import ir.sharif.library.components.PasswordTextFieldComponent
+import ir.sharif.library.data.signup.SignupUIEvent
+import ir.sharif.library.data.signup.SignupViewModel
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -52,37 +56,46 @@ fun SignUpScreen() {
                 MyTextFieldComponent(
                     labelValue = stringResource(id = R.string.first_name),
                     painterResource(id = R.drawable.profile),
-                    onTextChanged = {
-//                        signupViewModel.onEvent(SignupUIEvent.FirstNameChanged(it))
+                    onTextSubmit = {
+                        signupViewModel.onEvent(SignupUIEvent.FirstNameSubmit)
                     },
-//                    errorStatus = signupViewModel.registrationUIState.value.firstNameError
+                    onTextChanged = {
+                        signupViewModel.onEvent(SignupUIEvent.FirstNameChanged(it))
+                    },
+                    errorStatus = signupViewModel.registrationUIState.value.firstNameError,
+                    errorMessage = "Invalid input"
+
                 )
 
                 MyTextFieldComponent(
                     labelValue = stringResource(id = R.string.last_name),
                     painterResource = painterResource(id = R.drawable.profile),
                     onTextChanged = {
-//                        signupViewModel.onEvent(SignupUIEvent.LastNameChanged(it))
+                        signupViewModel.onEvent(SignupUIEvent.LastNameChanged(it))
                     },
-//                    errorStatus = signupViewModel.registrationUIState.value.lastNameError
+                    errorStatus = signupViewModel.registrationUIState.value.lastNameError,
+                    errorMessage = "Invalid input",
+                    onTextSubmit = {signupViewModel.onEvent(SignupUIEvent.LastNameSubmit)}
                 )
 
                 MyTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
                     painterResource = painterResource(id = R.drawable.message),
                     onTextChanged = {
-//                        signupViewModel.onEvent(SignupUIEvent.EmailChanged(it))
+                        signupViewModel.onEvent(SignupUIEvent.EmailChanged(it))
                     },
-//                    errorStatus = signupViewModel.registrationUIState.value.emailError
+                    errorStatus = signupViewModel.registrationUIState.value.emailError,
+                    errorMessage = "Invalid email address", onTextSubmit = {signupViewModel.onEvent(SignupUIEvent.EmailSubmit)}
+
                 )
 
                 PasswordTextFieldComponent(
                     labelValue = stringResource(id = R.string.password),
                     painterResource = painterResource(id = R.drawable.ic_lock),
                     onTextSelected = {
-//                        signupViewModel.onEvent(SignupUIEvent.PasswordChanged(it))
+                        signupViewModel.onEvent(SignupUIEvent.PasswordChanged(it))
                     },
-//                    errorStatus = signupViewModel.registrationUIState.value.passwordError
+                    errorStatus = signupViewModel.registrationUIState.value.passwordError,
                 )
 
                 CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions),
@@ -90,7 +103,7 @@ fun SignUpScreen() {
                         AppRouter.navigateTo(Screen.TermsAndConditionsScreen)
                     },
                     onCheckedChange = {
-//                        signupViewModel.onEvent(SignupUIEvent.PrivacyPolicyCheckBoxClicked(it))
+                        signupViewModel.onEvent(SignupUIEvent.PrivacyPolicyCheckBoxClicked(it))
                     }
                 )
 
@@ -99,9 +112,9 @@ fun SignUpScreen() {
                 ButtonComponent(
                     value = stringResource(id = R.string.register),
                     onButtonClicked = {
-//                        signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
+                        signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
                     },
-//                    isEnabled = signupViewModel.allValidationsPassed.value
+                    isEnabled = signupViewModel.allValidationsPassed.value
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -115,9 +128,9 @@ fun SignUpScreen() {
 
         }
 
-//        if(signupViewModel.signUpInProgress.value) {
-//            CircularProgressIndicator()
-//        }
+        if (signupViewModel.signUpInProgress.value) {
+            CircularProgressIndicator()
+        }
     }
 
 

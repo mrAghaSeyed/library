@@ -3,8 +3,10 @@ package ir.sharif.library.components
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -13,6 +15,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -22,15 +26,19 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -58,6 +66,7 @@ import ir.sharif.library.ui.theme.GrayColor
 import ir.sharif.library.ui.theme.Primary
 import ir.sharif.library.ui.theme.Secondary
 import ir.sharif.library.ui.theme.TextColor
+import ir.sharif.library.ui.theme.WhiteColor
 import ir.sharif.library.ui.theme.componentShapes
 
 
@@ -98,7 +107,9 @@ fun HeadingTextComponent(value: String) {
 fun MyTextFieldComponent(
     labelValue: String, painterResource: Painter,
     onTextChanged: (String) -> Unit,
-    errorStatus: Boolean = false
+    onTextSubmit: () -> Unit,
+    errorStatus: Boolean = false,
+    errorMessage: String = ""
 ) {
 
     val textValue = remember {
@@ -106,30 +117,48 @@ fun MyTextFieldComponent(
     }
     val localFocusManager = LocalFocusManager.current
 
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(componentShapes.small)
-            .background(BgColor),
-        label = { Text(text = labelValue) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Primary,
-            focusedLabelColor = Primary,
-            cursorColor = Primary,
-        ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-        singleLine = true,
-        maxLines = 1,
-        value = textValue.value,
-        onValueChange = {
-            textValue.value = it
-            onTextChanged(it)
-        },
-        leadingIcon = {
-            Icon(painter = painterResource, contentDescription = "")
-        },
-        isError = !errorStatus
-    )
+    Column {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(componentShapes.small)
+                .background(BgColor),
+            label = { Text(text = labelValue) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Primary,
+                focusedLabelColor = Primary,
+                cursorColor = Primary,
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {
+                onTextSubmit.invoke()
+                localFocusManager.moveFocus(FocusDirection.Next)
+            }),
+            singleLine = true,
+            maxLines = 1,
+            value = textValue.value,
+            onValueChange = {
+                textValue.value = it
+                onTextChanged(it)
+            },
+            leadingIcon = {
+                Icon(painter = painterResource, contentDescription = "")
+            },
+            isError = errorStatus
+        )
+
+        if (errorStatus) {
+            Snackbar(
+                modifier = Modifier.padding(16.dp).background(Color.White),
+                contentColor = Color.White,
+                content = {
+                    Text(
+                        text = errorMessage,
+                    )
+                }
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -385,4 +414,43 @@ fun UnderLinedTextComponent(value: String) {
         textDecoration = TextDecoration.Underline
     )
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppToolbar(
+    toolbarTitle: String, logoutButtonClicked: () -> Unit,
+    navigationIconClicked: () -> Unit
+) {
+
+    TopAppBar(
+        modifier = Modifier.background(Primary),
+        title = {
+            Text(
+                text = toolbarTitle, color = WhiteColor
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                navigationIconClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = stringResource(R.string.menu),
+                    tint = WhiteColor
+                )
+            }
+
+        },
+        actions = {
+            IconButton(onClick = {
+                logoutButtonClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Logout,
+                    contentDescription = stringResource(id = R.string.logout),
+                )
+            }
+        }
+    )
 }

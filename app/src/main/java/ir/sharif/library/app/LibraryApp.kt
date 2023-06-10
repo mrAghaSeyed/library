@@ -1,4 +1,4 @@
-package ir.sharif.library
+package ir.sharif.library.app
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import ir.sharif.library.AppRouter.AppRouter
 import ir.sharif.library.AppRouter.Screen
+import ir.sharif.library.MainScreenView
 import ir.sharif.library.screens.LoginScreen
 import ir.sharif.library.screens.SignUpScreen
 import ir.sharif.library.screens.TermsAndConditionsScreen
@@ -31,7 +32,7 @@ fun LibraryApp() {
                     LoginScreen()
                 }
                 is Screen.HomeScreen ->{
-//                    HomeScreen()
+                    MainScreenView()
                 }
             }
         }

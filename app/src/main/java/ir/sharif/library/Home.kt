@@ -1,5 +1,6 @@
 package ir.sharif.library
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,14 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.FirebaseAuth
+import ir.sharif.library.AppRouter.AppRouter
+import ir.sharif.library.AppRouter.Screen
 import ir.sharif.library.entities.Book
 import kotlinx.coroutines.launch
-
 
 
 @Composable
 fun Home(paddingValues: PaddingValues, vm: HomeViewModel = viewModel()) {
     vm.getBooksList()
+
     Column(
         Modifier
             .padding(paddingValues)
@@ -35,10 +39,10 @@ fun Home(paddingValues: PaddingValues, vm: HomeViewModel = viewModel()) {
 }
 
 
-
 class HomeViewModel : ViewModel() {
     var bookListResponse: List<Book> by mutableStateOf(listOf())
     var errorMessage: String by mutableStateOf("")
+    private val TAG = HomeViewModel::class.simpleName
 
     fun getBooksList() {
         viewModelScope.launch {
@@ -59,5 +63,25 @@ class HomeViewModel : ViewModel() {
                 errorMessage = e.message.toString()
             }
         }
+    }
+
+
+    fun logout() {
+
+        val firebaseAuth = FirebaseAuth.getInstance()
+
+        firebaseAuth.signOut()
+
+        val authStateListener = FirebaseAuth.AuthStateListener {
+            if (it.currentUser == null) {
+                Log.d(TAG, "Inside sign out success")
+                AppRouter.navigateTo(Screen.LoginScreen)
+            } else {
+                Log.d(TAG, "Inside sign out is not complete")
+            }
+        }
+
+        firebaseAuth.addAuthStateListener(authStateListener)
+
     }
 }

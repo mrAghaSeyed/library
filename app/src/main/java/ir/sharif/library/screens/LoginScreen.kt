@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.sharif.library.AppRouter.AppRouter
 import ir.sharif.library.AppRouter.Screen
 import ir.sharif.library.AppRouter.SystemBackButtonHandler
@@ -28,9 +30,11 @@ import ir.sharif.library.components.MyTextFieldComponent
 import ir.sharif.library.components.NormalTextComponent
 import ir.sharif.library.components.PasswordTextFieldComponent
 import ir.sharif.library.components.UnderLinedTextComponent
+import ir.sharif.library.data.login.LoginUIEvent
+import ir.sharif.library.data.login.LoginViewModel
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginViewModel :LoginViewModel = viewModel() ) {
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -56,18 +60,19 @@ fun LoginScreen() {
                 MyTextFieldComponent(labelValue = stringResource(id = R.string.email),
                     painterResource(id = R.drawable.message),
                     onTextChanged = {
-//                        loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                        loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
                     },
-//                    errorStatus = loginViewModel.loginUIState.value.emailError
+                    errorStatus = loginViewModel.loginUIState.value.emailError,
+                    onTextSubmit = {}
                 )
 
                 PasswordTextFieldComponent(
                     labelValue = stringResource(id = R.string.password),
                     painterResource(id = R.drawable.lock),
                     onTextSelected = {
-//                        loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+                        loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
                     },
-//                    errorStatus = loginViewModel.loginUIState.value.passwordError
+                    errorStatus = loginViewModel.loginUIState.value.passwordError
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -78,9 +83,9 @@ fun LoginScreen() {
                 ButtonComponent(
                     value = stringResource(id = R.string.login),
                     onButtonClicked = {
-//                        loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
+                        loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
                     },
-//                    isEnabled = loginViewModel.allValidationsPassed.value
+                    isEnabled = loginViewModel.allValidationsPassed.value
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -93,9 +98,9 @@ fun LoginScreen() {
             }
         }
 
-//        if(loginViewModel.loginInProgress.value) {
-//            CircularProgressIndicator()
-//        }
+        if(loginViewModel.loginInProgress.value) {
+            CircularProgressIndicator()
+        }
     }
 
 
