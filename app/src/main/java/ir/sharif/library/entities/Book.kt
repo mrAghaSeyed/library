@@ -14,5 +14,10 @@ data class Book(
     val title: String,
     val author: String,
     val price: Double = 20.00,
-    val cover: String
+    val cover: String,
+    val description: String = "",
+    val revision: Int = 1,
+    val publisher: String = "",
+    val publishDate: String = "",
+    val category: String = "",
 )

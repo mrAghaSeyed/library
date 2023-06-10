@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import ir.sharif.library.AppRouter.AppRouter
 import ir.sharif.library.AppRouter.Screen
@@ -37,6 +36,9 @@ fun Home(paddingValues: PaddingValues, viewModel: HomeViewModel, navController: 
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        if (viewModel.errorMessage != null) {
+            Text(text = viewModel.errorMessage!!)
+        }
         Text(text = "Home", style = MaterialTheme.typography.headlineSmall)
         BooksList(
             books = viewModel.bookListResponse,
@@ -52,28 +54,40 @@ class HomeViewModel @Inject constructor(
     private val cartItemRepository: CartItemRepository
 ) : ViewModel() {
     var bookListResponse: List<Book> by mutableStateOf(listOf())
-    var errorMessage: String by mutableStateOf("")
+    var errorMessage: String? by mutableStateOf(null)
     private val TAG = HomeViewModel::class.simpleName
 
     fun getBooksList() {
         viewModelScope.launch {
+            errorMessage = null
             val apiService = OpenLibraryService.getInstance()
             val olids =
                 "OLID:OL9952186M,OLID:OL7289325M,OLID:OL26335454M,OLID:OL10744956M,OLID:OL24319427M,OLID:OL3284292M"
             try {
-                val movieList = apiService.getBookDetails(olids)
-                val books = movieList.map { (olid, details) ->
+                val bookDetailsMap = apiService.getBookDetails(olids)
+
+                Log.w(TAG, "getBooksList: $bookDetailsMap")
+                val books = bookDetailsMap.map { (olid, bookObj) ->
+                    val details = bookObj.details
                     Book(
                         title = details.title,
-                        author = details.authors.first().name,
-                        cover = details.cover.medium,
+                        author = details.authors?.firstOrNull()?.name ?: "" ,
+                        cover = details.cover,
                         olid = olid,
+                        category = details.subjects?.firstOrNull() ?: "",
+                        description = details.description ?: "",
+                        revision = details.revision,
+                        publisher = details.publishers?.firstOrNull() ?: "",
+                        publishDate = details.publishDate,
                     )
                 }
+                Log.w(TAG, "getBooksList: $books $bookDetailsMap")
                 books.forEach { bookRepository.insert(it) }
                 bookListResponse = bookRepository.getAllBooks()
+                Log.w(TAG, "$bookListResponse")
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
+                Log.e(TAG, errorMessage!!)
             }
         }
     }

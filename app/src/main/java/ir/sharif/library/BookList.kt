@@ -30,7 +30,7 @@ fun BooksList(
             val book = bookWithCount.book
             BookCard(
                 title = book.title,
-                author = book.title,
+                author = book.author,
                 rate = "4.5/5",
                 showClose = showClose,
                 showCounter = showCounter,
@@ -54,13 +54,7 @@ fun BooksList(
 fun BooksList(
     modifier: Modifier = Modifier,
     showClose: Boolean = false,
-    books: List<Book> = listOf(
-        Book(
-            title = "book1",
-            author = "seyed",
-            cover = "https://covers.openlibrary.org/b/id/7085472-M.jpg"
-        )
-    ),
+    books: List<Book> = listOf(),
     onClose: (Book) -> Unit = {},
     onClick: (Book) -> Unit = {},
     onIncrease: (Book) -> Unit = {},

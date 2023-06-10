@@ -1,5 +1,6 @@
 package ir.sharif.library
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,8 +10,8 @@ import retrofit2.http.Query
 
 
 interface OpenLibraryService {
-    @GET("/api/books?format=json&jscmd=data")
-    suspend fun getBookDetails(@Query("bibkeys") olids: String): Map<String, BookDetails>
+    @GET("/api/books?format=json&jscmd=details")
+    suspend fun getBookDetails(@Query("bibkeys") olids: String): Map<String, OpenLibraryBook>
 
     companion object {
         var apiService: OpenLibraryService? = null
@@ -26,21 +27,24 @@ interface OpenLibraryService {
     }
 }
 
+data class OpenLibraryBook(
+    val details: BookDetails
+)
 
 data class BookDetails(
     val title: String,
-    val authors: List<Author>,
-    val cover: Cover,
-    val description: String,
+    val authors: List<NamedObject>?,
+    val covers: List<String>?,
+    val description: String?,
     val revision: Int,
-
+    val publishers: List<String>?,
+    @SerializedName("publish_date")
+    val publishDate: String,
+    val subjects: List<String>?
 ) {
 
-    data class Author (val name: String)
+    data class NamedObject (val name: String)
 
-    data class Cover (
-        val small: String,
-        val medium: String,
-        val large: String,
-    )
+    val cover: String
+        get() = "https://covers.openlibrary.org/b/id/${covers?.firstOrNull() ?: ""}-M.jpg"
 }

@@ -17,7 +17,7 @@ import ir.sharif.library.entities.User
 
 @Database(
     entities = [(Book::class), (User::class), (FavoriteBook::class), (CartItem::class)],
-    version = 5,
+    version = 7,
     exportSchema = false
 )
 abstract class LibraryDatabase : RoomDatabase() {
