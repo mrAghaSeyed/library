@@ -33,73 +33,64 @@ import ir.sharif.library.data.login.LoginUIEvent
 import ir.sharif.library.data.login.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController, loginViewModel :LoginViewModel = viewModel()) {
+fun LoginScreen(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
     loginViewModel.navController = navController
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
 
-        Surface(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(28.dp)
         ) {
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
+            NormalTextComponent(value = stringResource(id = R.string.login))
+            HeadingTextComponent(value = stringResource(id = R.string.welcome))
+            Spacer(modifier = Modifier.height(20.dp))
 
-                NormalTextComponent(value = stringResource(id = R.string.login))
-                HeadingTextComponent(value = stringResource(id = R.string.welcome))
-                Spacer(modifier = Modifier.height(20.dp))
+            MyTextFieldComponent(labelValue = stringResource(id = R.string.email),
+                painterResource(id = R.drawable.message),
+                onTextChanged = {
+                    loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                },
+                errorStatus = loginViewModel.loginUIState.value.emailError,
+                onTextSubmit = {}
+            )
 
-                MyTextFieldComponent(labelValue = stringResource(id = R.string.email),
-                    painterResource(id = R.drawable.message),
-                    onTextChanged = {
-                        loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
-                    },
-                    errorStatus = loginViewModel.loginUIState.value.emailError,
-                    onTextSubmit = {}
-                )
+            PasswordTextFieldComponent(
+                labelValue = stringResource(id = R.string.password),
+                painterResource(id = R.drawable.lock),
+                onTextSelected = {
+                    loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+                },
+                errorStatus = loginViewModel.loginUIState.value.passwordError
+            )
 
-                PasswordTextFieldComponent(
-                    labelValue = stringResource(id = R.string.password),
-                    painterResource(id = R.drawable.lock),
-                    onTextSelected = {
-                        loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
-                    },
-                    errorStatus = loginViewModel.loginUIState.value.passwordError
-                )
+            Spacer(modifier = Modifier.height(40.dp))
+            UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password))
 
-                Spacer(modifier = Modifier.height(40.dp))
-                UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password))
+            Spacer(modifier = Modifier.height(40.dp))
 
-                Spacer(modifier = Modifier.height(40.dp))
+            ButtonComponent(
+                value = stringResource(id = R.string.login),
+                onButtonClicked = {
+                    loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
+                },
+                isEnabled = loginViewModel.allValidationsPassed.value
+            )
 
-                ButtonComponent(
-                    value = stringResource(id = R.string.login),
-                    onButtonClicked = {
-                        loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
-                    },
-                    isEnabled = loginViewModel.allValidationsPassed.value
-                )
+            Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(modifier = Modifier.height(20.dp))
+            DividerTextComponent()
 
-                DividerTextComponent()
-
-                ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
-                    navController.navigate(SIGN_UP_ROUTE)
-                })
-            }
-        }
-
-        if(loginViewModel.loginInProgress.value) {
-            CircularProgressIndicator()
+            ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
+                navController.navigate(SIGN_UP_ROUTE)
+            })
         }
     }
 
+    if (loginViewModel.loginInProgress.value) {
+        CircularProgressIndicator()
+    }
 }

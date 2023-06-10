@@ -1,4 +1,4 @@
-package ir.sharif.library
+package ir.sharif.library.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer

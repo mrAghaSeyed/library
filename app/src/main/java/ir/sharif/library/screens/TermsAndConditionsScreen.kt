@@ -16,15 +16,8 @@ import ir.sharif.library.components.HeadingTextComponent
 
 @Composable
 fun TermsAndConditionsScreen(navController: NavHostController) {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(16.dp)
-    ) {
 
-        HeadingTextComponent(value = stringResource(id = R.string.terms_and_conditions_header))
-    }
+    HeadingTextComponent(value = stringResource(id = R.string.terms_and_conditions_header))
 
     navController.navigate(SIGN_UP_ROUTE)
 }

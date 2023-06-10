@@ -18,4 +18,5 @@ val GrayColor = Color(0xFF7B6F72)
 val WhiteColor = Color(0xFFFFFFFF)
 val BgColor = Color(0xFFF7F8F8)
 
+val DarkBg = Color(0xFF383838)
 val Black12 = Color(0xFF121212)

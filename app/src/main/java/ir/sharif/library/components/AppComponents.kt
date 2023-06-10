@@ -22,6 +22,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
@@ -75,7 +76,7 @@ fun NormalTextComponent(value: String) {
             fontSize = 24.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
-        ), color = TextColor,
+        ),
         textAlign = TextAlign.Center
     )
 }
@@ -91,7 +92,7 @@ fun HeadingTextComponent(value: String) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal
-        ), color = TextColor,
+        ), color = MaterialTheme.colorScheme.onPrimary,
         textAlign = TextAlign.Center
     )
 }
@@ -115,13 +116,13 @@ fun MyTextFieldComponent(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(componentShapes.small)
-                .background(BgColor),
+                .clip(componentShapes.small),
             label = { Text(text = labelValue) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Primary,
-                focusedLabelColor = Primary,
-                cursorColor = Primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
+                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
+                focusedLabelColor = MaterialTheme.colorScheme.onBackground,
+                cursorColor = MaterialTheme.colorScheme.onBackground,
             ),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = {
@@ -141,19 +142,19 @@ fun MyTextFieldComponent(
             isError = errorStatus
         )
 
-        if (errorStatus) {
-            Snackbar(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .background(Color.White),
-                contentColor = Color.White,
-                content = {
-                    Text(
-                        text = errorMessage,
-                    )
-                }
-            )
-        }
+//        if (errorStatus) {
+//            Snackbar(
+//                modifier = Modifier
+//                    .padding(16.dp),
+//                containerColor = MaterialTheme.colorScheme.errorContainer,
+//                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+//                content = {
+//                    Text(
+//                        text = errorMessage,
+//                    )
+//                }
+//            )
+//        }
     }
 }
 
@@ -177,14 +178,8 @@ fun PasswordTextFieldComponent(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(componentShapes.small)
-            .background(BgColor),
+            .clip(componentShapes.small),
         label = { Text(text = labelValue) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Primary,
-            focusedLabelColor = Primary,
-            cursorColor = Primary,
-        ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
@@ -262,12 +257,12 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
 
     val annotatedString = buildAnnotatedString {
         append(initialText)
-        withStyle(style = SpanStyle(color = Primary)) {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = privacyPolicyText, annotation = privacyPolicyText)
             append(privacyPolicyText)
         }
         append(andText)
-        withStyle(style = SpanStyle(color = Primary)) {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = termsAndConditionsText, annotation = termsAndConditionsText)
             append(termsAndConditionsText)
         }
@@ -310,7 +305,7 @@ fun DividerTextComponent() {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            color = GrayColor,
+            color = MaterialTheme.colorScheme.surface,
             thickness = 1.dp
         )
 
@@ -318,13 +313,12 @@ fun DividerTextComponent() {
             modifier = Modifier.padding(8.dp),
             text = stringResource(R.string.or),
             fontSize = 18.sp,
-            color = TextColor
         )
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            color = GrayColor,
+            color = MaterialTheme.colorScheme.surface,
             thickness = 1.dp
         )
     }

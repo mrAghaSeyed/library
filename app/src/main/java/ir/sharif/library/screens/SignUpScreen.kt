@@ -43,97 +43,89 @@ fun SignUpScreen(navController: NavHostController, signupViewModel: SignupViewMo
         contentAlignment = Alignment.Center
     ) {
 
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(28.dp)
-        ) {
-            Column(modifier = Modifier.fillMaxSize()) {
 
-                NormalTextComponent(value = stringResource(id = R.string.hello))
-                HeadingTextComponent(value = stringResource(id = R.string.create_account))
-                Spacer(modifier = Modifier.height(20.dp))
+        Column(modifier = Modifier.fillMaxSize()) {
 
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.first_name),
-                    painterResource(id = R.drawable.profile),
-                    onTextSubmit = {
-                        signupViewModel.onEvent(SignupUIEvent.FirstNameSubmit)
-                    },
-                    onTextChanged = {
-                        signupViewModel.onEvent(SignupUIEvent.FirstNameChanged(it))
-                    },
-                    errorStatus = signupViewModel.registrationUIState.value.firstNameError,
-                    errorMessage = "Invalid input"
+            NormalTextComponent(value = stringResource(id = R.string.hello))
+            HeadingTextComponent(value = stringResource(id = R.string.create_account))
+            Spacer(modifier = Modifier.height(20.dp))
 
-                )
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.first_name),
+                painterResource(id = R.drawable.profile),
+                onTextSubmit = {
+                    signupViewModel.onEvent(SignupUIEvent.FirstNameSubmit)
+                },
+                onTextChanged = {
+                    signupViewModel.onEvent(SignupUIEvent.FirstNameChanged(it))
+                },
+                errorStatus = signupViewModel.registrationUIState.value.firstNameError,
+                errorMessage = "Invalid input"
 
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.last_name),
-                    painterResource = painterResource(id = R.drawable.profile),
-                    onTextChanged = {
-                        signupViewModel.onEvent(SignupUIEvent.LastNameChanged(it))
-                    },
-                    errorStatus = signupViewModel.registrationUIState.value.lastNameError,
-                    errorMessage = "Invalid input",
-                    onTextSubmit = {signupViewModel.onEvent(SignupUIEvent.LastNameSubmit)}
-                )
+            )
 
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.email),
-                    painterResource = painterResource(id = R.drawable.message),
-                    onTextChanged = {
-                        signupViewModel.onEvent(SignupUIEvent.EmailChanged(it))
-                    },
-                    errorStatus = signupViewModel.registrationUIState.value.emailError,
-                    errorMessage = "Invalid email address", onTextSubmit = {signupViewModel.onEvent(SignupUIEvent.EmailSubmit)}
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.last_name),
+                painterResource = painterResource(id = R.drawable.profile),
+                onTextChanged = {
+                    signupViewModel.onEvent(SignupUIEvent.LastNameChanged(it))
+                },
+                errorStatus = signupViewModel.registrationUIState.value.lastNameError,
+                errorMessage = "Invalid input",
+                onTextSubmit = { signupViewModel.onEvent(SignupUIEvent.LastNameSubmit) }
+            )
 
-                )
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.email),
+                painterResource = painterResource(id = R.drawable.message),
+                onTextChanged = {
+                    signupViewModel.onEvent(SignupUIEvent.EmailChanged(it))
+                },
+                errorStatus = signupViewModel.registrationUIState.value.emailError,
+                errorMessage = "Invalid email address",
+                onTextSubmit = { signupViewModel.onEvent(SignupUIEvent.EmailSubmit) }
 
-                PasswordTextFieldComponent(
-                    labelValue = stringResource(id = R.string.password),
-                    painterResource = painterResource(id = R.drawable.ic_lock),
-                    onTextSelected = {
-                        signupViewModel.onEvent(SignupUIEvent.PasswordChanged(it))
-                    },
-                    errorStatus = signupViewModel.registrationUIState.value.passwordError,
-                )
+            )
 
-                CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions),
-                    onTextSelected = {
-                        navController.navigate(TERMS_AND_CONDITIONS_ROUTE)
-                    },
-                    onCheckedChange = {
-                        signupViewModel.onEvent(SignupUIEvent.PrivacyPolicyCheckBoxClicked(it))
-                    }
-                )
+            PasswordTextFieldComponent(
+                labelValue = stringResource(id = R.string.password),
+                painterResource = painterResource(id = R.drawable.ic_lock),
+                onTextSelected = {
+                    signupViewModel.onEvent(SignupUIEvent.PasswordChanged(it))
+                },
+                errorStatus = signupViewModel.registrationUIState.value.passwordError,
+            )
 
-                Spacer(modifier = Modifier.height(40.dp))
+            CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions),
+                onTextSelected = {
+                    navController.navigate(TERMS_AND_CONDITIONS_ROUTE)
+                },
+                onCheckedChange = {
+                    signupViewModel.onEvent(SignupUIEvent.PrivacyPolicyCheckBoxClicked(it))
+                }
+            )
 
-                ButtonComponent(
-                    value = stringResource(id = R.string.register),
-                    onButtonClicked = {
-                        signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
-                    },
-                    isEnabled = signupViewModel.isAllValidationsPassed()
-                )
+            ButtonComponent(
+                value = stringResource(id = R.string.register),
+                onButtonClicked = {
+                    signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
+                },
+                isEnabled = signupViewModel.allValidationsPassed.value
+            )
 
-                Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-                DividerTextComponent()
+            DividerTextComponent()
 
-                ClickableLoginTextComponent(tryingToLogin = true, onTextSelected = {
-                    navController.navigate(LOGIN_ROUTE)
-                })
-            }
-
+            ClickableLoginTextComponent(tryingToLogin = true, onTextSelected = {
+                navController.navigate(LOGIN_ROUTE)
+            })
         }
 
-        if (signupViewModel.signUpInProgress.value) {
-            CircularProgressIndicator()
-        }
     }
 
-
+    if (signupViewModel.signUpInProgress.value) {
+        CircularProgressIndicator()
+    }
 }
+

@@ -1,7 +1,5 @@
 package ir.sharif.library
 
-import android.util.Log
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
@@ -14,18 +12,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NamedNavArgument
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
+import ir.sharif.library.screens.Cart
+import ir.sharif.library.screens.Favorites
+import ir.sharif.library.screens.Home
 import ir.sharif.library.screens.LoginScreen
 import ir.sharif.library.screens.SignUpScreen
 import ir.sharif.library.screens.TermsAndConditionsScreen
-import ir.sharif.library.ui.theme.LibraryTheme
 
 sealed class BottomNavItem(
     val name: String,
