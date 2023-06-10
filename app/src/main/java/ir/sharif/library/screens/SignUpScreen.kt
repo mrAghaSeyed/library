@@ -1,5 +1,6 @@
 package ir.sharif.library.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 
 import androidx.compose.foundation.layout.Box
@@ -114,7 +115,7 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
                     onButtonClicked = {
                         signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
                     },
-                    isEnabled = signupViewModel.allValidationsPassed.value
+                    isEnabled = signupViewModel.isAllValidationsPassed()
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))

@@ -9,6 +9,7 @@ import ir.sharif.library.AppRouter.Screen
 import ir.sharif.library.data.RegistrationUIState
 import ir.sharif.library.data.rules.Validator
 import ir.sharif.library.data.rules.Validator.validateFirstName
+import ir.sharif.library.data.rules.Validator.validatePrivacyPolicyAcceptance
 
 
 class SignupViewModel : ViewModel() {
@@ -63,6 +64,16 @@ class SignupViewModel : ViewModel() {
                 registrationUIState.value = registrationUIState.value.copy(
                     privacyPolicyAccepted = event.status
                 )
+                if (!event.status){
+                    registrationUIState.value = registrationUIState.value.copy(
+                        privacyPolicyError = true
+                    )
+                }else{
+                    registrationUIState.value = registrationUIState.value.copy(
+                        privacyPolicyError = false
+                    )
+                }
+                printState()
             }
 
             is SignupUIEvent.FirstNameSubmit -> {
@@ -90,7 +101,6 @@ class SignupViewModel : ViewModel() {
                 )
             }
         }
-//        validateDataWithRules()
     }
 
 
@@ -134,7 +144,7 @@ class SignupViewModel : ViewModel() {
 
 
     private fun validateDataWithRules() {
-        val fNameResult = Validator.validateFirstName(
+        val fNameResult = validateFirstName(
             fName = registrationUIState.value.firstName
         )
 
@@ -151,7 +161,7 @@ class SignupViewModel : ViewModel() {
             password = registrationUIState.value.password
         )
 
-        val privacyPolicyResult = Validator.validatePrivacyPolicyAcceptance(
+        val privacyPolicyResult =validatePrivacyPolicyAcceptance(
             statusValue = registrationUIState.value.privacyPolicyAccepted
         )
 
@@ -175,5 +185,37 @@ class SignupViewModel : ViewModel() {
         allValidationsPassed.value = fNameResult.status && lNameResult.status &&
                 emailResult.status && passwordResult.status && privacyPolicyResult.status
 
+    }
+
+    fun isAllValidationsPassed(): Boolean {
+        val fNameResult = validateFirstName(
+            fName = registrationUIState.value.firstName
+        )
+
+        val lNameResult = Validator.validateLastName(
+            lName = registrationUIState.value.lastName
+        )
+
+        val emailResult = Validator.validateEmail(
+            email = registrationUIState.value.email
+        )
+
+
+        val passwordResult = Validator.validatePassword(
+            password = registrationUIState.value.password
+        )
+
+        val privacyPolicyResult =validatePrivacyPolicyAcceptance(
+            statusValue = registrationUIState.value.privacyPolicyAccepted
+        )
+        Log.d(TAG, "Inside_isAllValidationsPassed")
+        Log.d(TAG, "fNameResult= $fNameResult")
+        Log.d(TAG, "lNameResult= $lNameResult")
+        Log.d(TAG, "emailResult= $emailResult")
+        Log.d(TAG, "passwordResult= $passwordResult")
+        Log.d(TAG, "privacyPolicyResult= $privacyPolicyResult")
+
+        return  fNameResult.status && lNameResult.status &&
+                emailResult.status && passwordResult.status && privacyPolicyResult.status
     }
 }
