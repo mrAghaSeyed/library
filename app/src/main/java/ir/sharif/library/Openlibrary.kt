@@ -31,6 +31,9 @@ data class BookDetails(
     val title: String,
     val authors: List<Author>,
     val cover: Cover,
+    val description: String,
+    val revision: Int,
+
 ) {
 
     data class Author (val name: String)

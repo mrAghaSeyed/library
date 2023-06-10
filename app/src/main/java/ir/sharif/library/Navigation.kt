@@ -49,6 +49,9 @@ const val DETAIL_ROUTE = "detail"
 @Composable
 fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
+        composable("login") {
+            Details(paddingValues)
+        }
         composable(BottomNavItem.Home.route) {
             Home(paddingValues, hiltViewModel(), navController)
         }
@@ -59,7 +62,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             Favorites(paddingValues, hiltViewModel(), navController)
         }
         composable("$DETAIL_ROUTE/{bookId}") {
-            Text(text = "THE ID IS: ${it.arguments?.getString("bookId")}")
+            Details(paddingValues)
         }
     }
 }

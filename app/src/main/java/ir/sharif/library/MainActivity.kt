@@ -72,3 +72,12 @@ fun MainScreenView(homeViewModel: HomeViewModel = viewModel()) {
         NavigationGraph(navController = navController, paddingValues = it)
     }
 }
+
+
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    LibraryTheme {
+//        Cart(PaddingValues(0.dp))
+//    }
+//}
