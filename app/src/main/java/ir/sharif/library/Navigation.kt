@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import ir.sharif.library.ui.theme.LibraryTheme
 
 sealed class BottomNavItem(
     val name: String,
@@ -86,3 +88,4 @@ fun NavigationBar(navController: NavHostController) = androidx.compose.material3
         )
     }
 }
+

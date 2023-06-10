@@ -2,6 +2,7 @@ package ir.sharif.library
 
 import android.app.Application
 import android.content.Context
+import com.google.firebase.FirebaseApp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +12,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.sharif.library.dao.FavoriteBookDao
 
 @HiltAndroidApp
-class LibraryApplication : Application()
+class LibraryApplication : Application(){
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseApp.initializeApp(this)
+    }
+}
 
 
 @Module

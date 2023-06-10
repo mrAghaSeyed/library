@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24059588998",
+    "project_id": "library-8099a",
+    "storage_bucket": "library-8099a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24059588998:android:aa2fcf8d7912833ccefc07",
+        "android_client_info": {
+          "package_name": "ir.sharif.library"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24059588998-8am1dqrr2t7ctu1gcjdvopc084vobckq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdf5oV-n7AfFts4gEqwB8kFgccmZ5KmTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24059588998-8am1dqrr2t7ctu1gcjdvopc084vobckq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
