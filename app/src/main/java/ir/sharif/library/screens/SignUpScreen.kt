@@ -110,7 +110,7 @@ fun SignUpScreen(navController: NavHostController, signupViewModel: SignupViewMo
                 onButtonClicked = {
                     signupViewModel.onEvent(SignupUIEvent.RegisterButtonClicked)
                 },
-                isEnabled = signupViewModel.allValidationsPassed.value
+                isEnabled = signupViewModel.isAllValidationsPassed()
             )
 
             Spacer(modifier = Modifier.height(20.dp))
