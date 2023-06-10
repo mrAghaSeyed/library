@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
 import ir.sharif.library.repository.FavoriteBookRepository
@@ -22,7 +23,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Composable
-fun Favorites(paddingValues: PaddingValues, vm: FavoritesViewModel = hiltViewModel()) {
+fun Favorites(paddingValues: PaddingValues, vm: FavoritesViewModel, navController: NavController) {
+    vm.getFavorites()
     Column(
         Modifier
             .padding(paddingValues)
@@ -30,19 +32,30 @@ fun Favorites(paddingValues: PaddingValues, vm: FavoritesViewModel = hiltViewMod
             .padding(top = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(text = "Favorites", style = MaterialTheme.typography.headlineSmall)
-        BooksList(showClose = true)
+        BooksList(
+            showClose = true,
+            books = vm.favorites,
+            onClose = { vm.removeFavorite(it) },
+            onClick = { navController.navigate("$DETAIL_ROUTE/${it.id}") })
     }
 }
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(private val favoriteBookRepository: FavoriteBookRepository) : ViewModel() {
+class FavoritesViewModel @Inject constructor(private val repository: FavoriteBookRepository) :
+    ViewModel() {
 
     var favorites: List<Book> by mutableStateOf(listOf())
 
-    fun getBooksList() {
+    fun getFavorites() {
         viewModelScope.launch {
-
+            favorites = repository.getFavoriteBooksByUserId(1)
         }
     }
 
+    fun removeFavorite(book: Book) {
+        viewModelScope.launch {
+            repository.delete(1, book.id)
+            getFavorites()
+        }
+    }
 }

@@ -19,14 +19,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import ir.sharif.library.AppRouter.AppRouter
 import ir.sharif.library.AppRouter.Screen
+import androidx.navigation.NavController
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
+import ir.sharif.library.entities.CartItem
+import ir.sharif.library.repository.BookRepository
+import ir.sharif.library.repository.CartItemRepository
 import kotlinx.coroutines.launch
-
+import javax.inject.Inject
 
 @Composable
-fun Home(paddingValues: PaddingValues, vm: HomeViewModel = viewModel()) {
-    vm.getBooksList()
-
+fun Home(paddingValues: PaddingValues, viewModel: HomeViewModel, navController: NavController) {
+    viewModel.getBooksList()
     Column(
         Modifier
             .padding(paddingValues)
@@ -34,12 +38,19 @@ fun Home(paddingValues: PaddingValues, vm: HomeViewModel = viewModel()) {
             .padding(top = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(text = "Home", style = MaterialTheme.typography.headlineSmall)
-        BooksList(books = vm.bookListResponse, showCounter = true)
+        BooksList(
+            books = viewModel.bookListResponse,
+            showClose = true,
+            onClose = { viewModel.addToFavorites(it) },
+            onClick = { navController.navigate("$DETAIL_ROUTE/${it.id}") })
     }
 }
 
-
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val bookRepository: BookRepository,
+    private val cartItemRepository: CartItemRepository
+) : ViewModel() {
     var bookListResponse: List<Book> by mutableStateOf(listOf())
     var errorMessage: String by mutableStateOf("")
     private val TAG = HomeViewModel::class.simpleName
@@ -51,7 +62,7 @@ class HomeViewModel : ViewModel() {
                 "OLID:OL9952186M,OLID:OL7289325M,OLID:OL26335454M,OLID:OL10744956M,OLID:OL24319427M,OLID:OL3284292M"
             try {
                 val movieList = apiService.getBookDetails(olids)
-                bookListResponse = movieList.map { (olid, details) ->
+                val books = movieList.map { (olid, details) ->
                     Book(
                         title = details.title,
                         author = details.authors.first().name,
@@ -59,9 +70,17 @@ class HomeViewModel : ViewModel() {
                         olid = olid,
                     )
                 }
+                books.forEach { bookRepository.insert(it) }
+                bookListResponse = bookRepository.getAllBooks()
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
+        }
+    }
+
+    fun addToFavorites(book: Book) {
+        viewModelScope.launch {
+            cartItemRepository.insert(CartItem(userId = 1, bookId = book.id, count = 1))
         }
     }
 
