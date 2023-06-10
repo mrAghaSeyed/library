@@ -12,11 +12,11 @@ class FavoriteBookRepository @Inject constructor(private val favoriteBookDao: Fa
         favoriteBookDao.insert(favoriteBook)
     }
 
-    suspend fun delete(userId: Long, bookId: Long) = withContext(Dispatchers.IO) {
+    suspend fun delete(userId: String, bookId: Long) = withContext(Dispatchers.IO) {
         favoriteBookDao.delete(userId, bookId)
     }
 
-    suspend fun getFavoriteBooksByUserId(userId: Long): List<Book> = withContext(Dispatchers.IO) {
+    suspend fun getFavoriteBooksByUserId(userId: String): List<Book> = withContext(Dispatchers.IO) {
         favoriteBookDao.getFavoriteBooksByUserId(userId)
     }
 }

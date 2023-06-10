@@ -12,17 +12,17 @@ class CartItemRepository @Inject constructor(private val cartItemDao: CartItemDa
     }
 
 
-    suspend fun delete(userId: Long, bookId: Long) = withContext(Dispatchers.IO) {
+    suspend fun delete(userId: String, bookId: Long) = withContext(Dispatchers.IO) {
         cartItemDao.delete(userId, bookId)
     }
 
-    suspend fun getCartByUserId(userId: Long) = withContext(Dispatchers.IO) {
+    suspend fun getCartByUserId(userId: String) = withContext(Dispatchers.IO) {
         cartItemDao.getCartByUserId(userId)
     }
-    suspend fun increaseCount(userId: Long, bookId: Long) = withContext(Dispatchers.IO) {
+    suspend fun increaseCount(userId: String, bookId: Long) = withContext(Dispatchers.IO) {
         cartItemDao.increaseCount(userId, bookId)
     }
-    suspend fun decreaseCount(userId: Long, bookId: Long) = withContext(Dispatchers.IO) {
+    suspend fun decreaseCount(userId: String, bookId: Long) = withContext(Dispatchers.IO) {
         cartItemDao.decreaseCount(userId, bookId)
     }
 }

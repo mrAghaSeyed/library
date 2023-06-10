@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
 data class CartItem(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
-    val userId: Long,
+    val userId: String,
     val bookId: Long,
     val count: Int
 )

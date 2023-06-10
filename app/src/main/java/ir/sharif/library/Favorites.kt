@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
 import ir.sharif.library.repository.FavoriteBookRepository
@@ -47,13 +48,14 @@ class FavoritesViewModel @Inject constructor(private val repository: FavoriteBoo
 
     fun getFavorites() {
         viewModelScope.launch {
-            favorites = repository.getFavoriteBooksByUserId(1)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            favorites = repository.getFavoriteBooksByUserId(userId)
         }
     }
 
     fun removeFavorite(book: Book) {
         viewModelScope.launch {
-            repository.delete(1, book.id)
+            repository.delete(getUserId()!!, book.id)
             getFavorites()
         }
     }

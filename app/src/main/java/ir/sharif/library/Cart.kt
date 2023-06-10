@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
 import ir.sharif.library.repository.BookRepository
@@ -85,7 +86,8 @@ class CartViewModel @Inject constructor(
 
     fun getCart() {
         viewModelScope.launch {
-            val cartItems = repository.getCartByUserId(1)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            val cartItems = repository.getCartByUserId(userId)
             booksCount = cartItems.map { it.count }
             cart = cartItems.map { BookWithCount(bookRepository.getBookById(it.bookId), it.count) }
             totalPrice = cart.sumOf { it.count * it.book.price }
@@ -94,21 +96,21 @@ class CartViewModel @Inject constructor(
 
     fun increase(book: Book) {
         viewModelScope.launch {
-            repository.increaseCount(bookId = book.id, userId = 1)
+            repository.increaseCount(bookId = book.id, userId = getUserId()!!)
             getCart()
         }
     }
 
     fun decrease(book: Book) {
         viewModelScope.launch {
-            repository.decreaseCount(bookId = book.id, userId = 1)
+            repository.decreaseCount(bookId = book.id, userId = getUserId()!!)
             getCart()
         }
     }
 
     fun delete(book: Book) {
         viewModelScope.launch {
-            repository.delete(bookId = book.id, userId = 1)
+            repository.delete(bookId = book.id, userId = getUserId()!!)
             getCart()
         }
     }

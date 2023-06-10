@@ -402,17 +402,17 @@ fun AppToolbar(
                 text = toolbarTitle
             )
         },
-        navigationIcon = {
-            IconButton(onClick = {
-                navigationIconClicked.invoke()
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(R.string.menu)
-                )
-            }
-
-        },
+//        navigationIcon = {
+//            IconButton(onClick = {
+//                navigationIconClicked.invoke()
+//            }) {
+//                Icon(
+//                    imageVector = Icons.Filled.Menu,
+//                    contentDescription = stringResource(R.string.menu)
+//                )
+//            }
+//
+//        },
         actions = {
             IconButton(onClick = {
                 logoutButtonClicked()

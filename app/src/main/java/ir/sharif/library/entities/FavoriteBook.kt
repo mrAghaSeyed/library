@@ -22,6 +22,6 @@ import androidx.room.PrimaryKey
 data class FavoriteBook(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
-    val userId: Long,
+    val userId: String,
     val bookId: Long
 )

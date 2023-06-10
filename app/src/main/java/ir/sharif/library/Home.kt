@@ -39,8 +39,6 @@ fun Home(paddingValues: PaddingValues, viewModel: HomeViewModel, navController: 
         }
         BooksList(
             books = viewModel.bookListResponse,
-            showClose = true,
-            onClose = { viewModel.addToFavorites(it) },
             onClick = { navController.navigate("$DETAIL_ROUTE/${it.id}") })
     }
 }
@@ -82,12 +80,6 @@ class HomeViewModel @Inject constructor(
                 errorMessage = e.message.toString()
                 Log.e(TAG, errorMessage!!)
             }
-        }
-    }
-
-    fun addToFavorites(book: Book) {
-        viewModelScope.launch {
-            cartItemRepository.insert(CartItem(userId = 1, bookId = book.id, count = 1))
         }
     }
 }

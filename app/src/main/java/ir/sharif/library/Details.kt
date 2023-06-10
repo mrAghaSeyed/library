@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
 import ir.sharif.library.entities.CartItem
@@ -130,7 +131,6 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
     var book: Book? by mutableStateOf(null)
     var bookId: Long? by mutableStateOf(null)
-
     fun getBookDetail(id: Long) {
         viewModelScope.launch {
             bookId = id
@@ -140,13 +140,13 @@ class DetailsViewModel @Inject constructor(
 
     fun addToFavorites() {
         viewModelScope.launch {
-            favoritesRepository.insert(FavoriteBook(userId = 1, bookId = bookId!!))
+            favoritesRepository.insert(FavoriteBook(userId = getUserId()!!, bookId = bookId!!))
         }
     }
 
     fun addToCart() {
         viewModelScope.launch {
-            cartItemRepository.insert(CartItem(userId = 1, bookId = bookId!!, count = 1))
+            cartItemRepository.insert(CartItem(userId = getUserId()!!, bookId = bookId!!, count = 1))
         }
     }
 

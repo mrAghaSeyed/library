@@ -14,9 +14,9 @@ interface FavoriteBookDao {
     suspend fun insert(favoriteBook: FavoriteBook): Long
 
     @Query("DELETE FROM favorite_books WHERE userId = :userId AND bookId = :bookId")
-    suspend fun delete(userId: Long, bookId: Long)
+    suspend fun delete(userId: String, bookId: Long)
 
     @Transaction
     @Query("SELECT * FROM books WHERE id IN (SELECT bookId FROM favorite_books WHERE userId = :userId)")
-    suspend fun getFavoriteBooksByUserId(userId: Long): List<Book>
+    suspend fun getFavoriteBooksByUserId(userId: String): List<Book>
 }

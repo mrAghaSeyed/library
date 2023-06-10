@@ -1,5 +1,6 @@
 package ir.sharif.library
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
@@ -20,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import ir.sharif.library.screens.LoginScreen
 import ir.sharif.library.screens.SignUpScreen
 import ir.sharif.library.screens.TermsAndConditionsScreen
@@ -57,7 +59,9 @@ const val TERMS_AND_CONDITIONS_ROUTE = "terms-and-conditions"
 @Composable
 fun NavigationGraph() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = SIGN_UP_ROUTE) {
+    val uid = getUserId()
+    val sourceDestination = when (uid == null) {true -> LOGIN_ROUTE else -> BottomNavItem.Home.route}
+    NavHost(navController, startDestination = sourceDestination) {
         composable(BottomNavItem.Home.route) {
             MainScreenView(navController, BottomNavItem.Home.name) {
                 Home(it, hiltViewModel(), navController)
@@ -123,3 +127,4 @@ fun NavigationBar(navController: NavHostController) = androidx.compose.material3
     }
 }
 
+fun getUserId() = FirebaseAuth.getInstance().currentUser?.uid
