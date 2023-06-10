@@ -7,12 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "cart_items",
     foreignKeys = [
-//        ForeignKey(
-//            entity = User::class,
-//            parentColumns = ["id"],
-//            childColumns = ["userId"],
-//            onDelete = ForeignKey.CASCADE
-//        ),
         ForeignKey(
             entity = Book::class,
             parentColumns = ["id"],

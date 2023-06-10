@@ -31,7 +31,6 @@ fun Favorites(paddingValues: PaddingValues, vm: FavoritesViewModel, navControlle
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(text = "Favorites", style = MaterialTheme.typography.headlineSmall)
         BooksList(
             showClose = true,
             books = vm.favorites,

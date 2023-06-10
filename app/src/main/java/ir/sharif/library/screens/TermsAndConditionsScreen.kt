@@ -8,31 +8,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
-import ir.sharif.library.AppRouter.SystemBackButtonHandler
+import androidx.navigation.NavHostController
 import ir.sharif.library.R
+import ir.sharif.library.SIGN_UP_ROUTE
 import ir.sharif.library.components.HeadingTextComponent
 
 @Composable
-fun TermsAndConditionsScreen() {
-    Surface(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.White)
-        .padding(16.dp)) {
+fun TermsAndConditionsScreen(navController: NavHostController) {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(16.dp)
+    ) {
 
         HeadingTextComponent(value = stringResource(id = R.string.terms_and_conditions_header))
     }
 
-    SystemBackButtonHandler {
-        AppRouter.navigateTo(Screen.SignUpScreen)
-    }
-}
-
-@Preview
-@Composable
-fun TermsAndConditionsScreenPreview(){
-    TermsAndConditionsScreen()
+    navController.navigate(SIGN_UP_ROUTE)
 }

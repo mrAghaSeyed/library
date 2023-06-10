@@ -18,10 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
-import ir.sharif.library.AppRouter.SystemBackButtonHandler
+import androidx.navigation.NavHostController
 import ir.sharif.library.R
+import ir.sharif.library.SIGN_UP_ROUTE
 import ir.sharif.library.components.ButtonComponent
 import ir.sharif.library.components.ClickableLoginTextComponent
 import ir.sharif.library.components.DividerTextComponent
@@ -34,8 +33,8 @@ import ir.sharif.library.data.login.LoginUIEvent
 import ir.sharif.library.data.login.LoginViewModel
 
 @Composable
-fun LoginScreen(loginViewModel :LoginViewModel = viewModel() ) {
-
+fun LoginScreen(navController: NavHostController, loginViewModel :LoginViewModel = viewModel()) {
+    loginViewModel.navController = navController
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -93,7 +92,7 @@ fun LoginScreen(loginViewModel :LoginViewModel = viewModel() ) {
                 DividerTextComponent()
 
                 ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
-                    AppRouter.navigateTo(Screen.SignUpScreen)
+                    navController.navigate(SIGN_UP_ROUTE)
                 })
             }
         }
@@ -103,14 +102,4 @@ fun LoginScreen(loginViewModel :LoginViewModel = viewModel() ) {
         }
     }
 
-
-    SystemBackButtonHandler {
-        AppRouter.navigateTo(Screen.SignUpScreen)
-    }
-}
-
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen()
 }

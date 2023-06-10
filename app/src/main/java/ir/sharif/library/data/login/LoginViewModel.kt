@@ -3,9 +3,10 @@ package ir.sharif.library.data.login
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
+import ir.sharif.library.BottomNavItem
 import ir.sharif.library.data.rules.Validator
 
 class LoginViewModel : ViewModel() {
@@ -16,6 +17,8 @@ class LoginViewModel : ViewModel() {
     var allValidationsPassed = mutableStateOf(false)
 
     var loginInProgress = mutableStateOf(false)
+
+    lateinit var navController: NavHostController
 
 
     fun onEvent(event: LoginUIEvent) {
@@ -73,15 +76,13 @@ class LoginViewModel : ViewModel() {
 
                 if(it.isSuccessful){
                     loginInProgress.value = false
-                    AppRouter.navigateTo(Screen.HomeScreen)
+                    navController.navigate(BottomNavItem.Home.route)
                 }
             }
             .addOnFailureListener {
                 Log.d(TAG,"Inside_login_failure")
                 it.localizedMessage?.let { it1 -> Log.d(TAG, it1) }
-
                 loginInProgress.value = false
-
             }
 
     }

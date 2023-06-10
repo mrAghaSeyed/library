@@ -3,16 +3,16 @@ package ir.sharif.library.data.signup
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
+import ir.sharif.library.BottomNavItem
 import ir.sharif.library.data.RegistrationUIState
 import ir.sharif.library.data.rules.Validator
 import ir.sharif.library.data.rules.Validator.validateFirstName
 import ir.sharif.library.data.rules.Validator.validatePrivacyPolicyAcceptance
 
 
-class SignupViewModel : ViewModel() {
+class SignupViewModel: ViewModel() {
 
     private val TAG = SignupViewModel::class.simpleName
 
@@ -22,6 +22,8 @@ class SignupViewModel : ViewModel() {
     var allValidationsPassed = mutableStateOf(false)
 
     var signUpInProgress = mutableStateOf(false)
+
+    lateinit var navController: NavHostController
 
     fun onEvent(event: SignupUIEvent) {
         when (event) {
@@ -112,7 +114,7 @@ class SignupViewModel : ViewModel() {
     private fun signUp() {
         Log.d(TAG, "Inside_signUp")
         printState()
-        AppRouter.navigateTo(Screen.HomeScreen)
+        navController.navigate(BottomNavItem.Home.route)
         createUserInFirebase(
             email = registrationUIState.value.email,
             password = registrationUIState.value.password
@@ -132,7 +134,7 @@ class SignupViewModel : ViewModel() {
 
                 signUpInProgress.value = false
                 if (it.isSuccessful) {
-                    AppRouter.navigateTo(Screen.HomeScreen)
+                    navController.navigate(BottomNavItem.Home.route)
                 }
             }
             .addOnFailureListener {

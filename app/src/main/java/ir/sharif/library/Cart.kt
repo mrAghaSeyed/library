@@ -40,7 +40,6 @@ fun Cart(paddingValues: PaddingValues, vm: CartViewModel, navController: NavCont
             .fillMaxHeight(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(text = "Cart", style = MaterialTheme.typography.headlineSmall)
         BooksList(
             Modifier.weight(1f),
             booksWithCount = vm.cart,

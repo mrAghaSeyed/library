@@ -20,9 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
+import androidx.navigation.NavHostController
+import ir.sharif.library.LOGIN_ROUTE
 import ir.sharif.library.R
+import ir.sharif.library.TERMS_AND_CONDITIONS_ROUTE
 import ir.sharif.library.components.ButtonComponent
 import ir.sharif.library.components.CheckboxComponent
 import ir.sharif.library.components.ClickableLoginTextComponent
@@ -35,8 +36,8 @@ import ir.sharif.library.data.signup.SignupUIEvent
 import ir.sharif.library.data.signup.SignupViewModel
 
 @Composable
-fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
-
+fun SignUpScreen(navController: NavHostController, signupViewModel: SignupViewModel = viewModel()) {
+    signupViewModel.navController = navController
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -101,7 +102,7 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
 
                 CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions),
                     onTextSelected = {
-                        AppRouter.navigateTo(Screen.TermsAndConditionsScreen)
+                        navController.navigate(TERMS_AND_CONDITIONS_ROUTE)
                     },
                     onCheckedChange = {
                         signupViewModel.onEvent(SignupUIEvent.PrivacyPolicyCheckBoxClicked(it))
@@ -123,7 +124,7 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
                 DividerTextComponent()
 
                 ClickableLoginTextComponent(tryingToLogin = true, onTextSelected = {
-                    AppRouter.navigateTo(Screen.LoginScreen)
+                    navController.navigate(LOGIN_ROUTE)
                 })
             }
 
@@ -135,10 +136,4 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
     }
 
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewOfSignupScreen() {
-    SignUpScreen()
 }

@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import ir.sharif.library.AppRouter.AppRouter
-import ir.sharif.library.AppRouter.Screen
 import androidx.navigation.NavController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.sharif.library.entities.Book
@@ -39,7 +37,6 @@ fun Home(paddingValues: PaddingValues, viewModel: HomeViewModel, navController: 
         if (viewModel.errorMessage != null) {
             Text(text = viewModel.errorMessage!!)
         }
-        Text(text = "Home", style = MaterialTheme.typography.headlineSmall)
         BooksList(
             books = viewModel.bookListResponse,
             showClose = true,
@@ -65,8 +62,6 @@ class HomeViewModel @Inject constructor(
                 "OLID:OL9952186M,OLID:OL7289325M,OLID:OL26335454M,OLID:OL10744956M,OLID:OL24319427M,OLID:OL3284292M"
             try {
                 val bookDetailsMap = apiService.getBookDetails(olids)
-
-                Log.w(TAG, "getBooksList: $bookDetailsMap")
                 val books = bookDetailsMap.map { (olid, bookObj) ->
                     val details = bookObj.details
                     Book(
@@ -81,10 +76,8 @@ class HomeViewModel @Inject constructor(
                         publishDate = details.publishDate,
                     )
                 }
-                Log.w(TAG, "getBooksList: $books $bookDetailsMap")
                 books.forEach { bookRepository.insert(it) }
                 bookListResponse = bookRepository.getAllBooks()
-                Log.w(TAG, "$bookListResponse")
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
                 Log.e(TAG, errorMessage!!)
@@ -96,25 +89,5 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             cartItemRepository.insert(CartItem(userId = 1, bookId = book.id, count = 1))
         }
-    }
-
-
-    fun logout() {
-
-        val firebaseAuth = FirebaseAuth.getInstance()
-
-        firebaseAuth.signOut()
-
-        val authStateListener = FirebaseAuth.AuthStateListener {
-            if (it.currentUser == null) {
-                Log.d(TAG, "Inside sign out success")
-                AppRouter.navigateTo(Screen.LoginScreen)
-            } else {
-                Log.d(TAG, "Inside sign out is not complete")
-            }
-        }
-
-        firebaseAuth.addAuthStateListener(authStateListener)
-
     }
 }

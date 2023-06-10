@@ -7,12 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "favorite_books",
     foreignKeys = [
-//        ForeignKey(
-//            entity = User::class,
-//            parentColumns = ["id"],
-//            childColumns = ["userId"],
-//            onDelete = ForeignKey.CASCADE
-//        ),
         ForeignKey(
             entity = Book::class,
             parentColumns = ["id"],

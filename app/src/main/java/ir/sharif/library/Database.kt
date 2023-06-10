@@ -8,23 +8,20 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.sharif.library.dao.BookDao
 import ir.sharif.library.dao.CartItemDao
 import ir.sharif.library.dao.FavoriteBookDao
-import ir.sharif.library.dao.UserDao
 import ir.sharif.library.entities.Book
 import ir.sharif.library.entities.CartItem
 import ir.sharif.library.entities.FavoriteBook
-import ir.sharif.library.entities.User
 
 
 @Database(
-    entities = [(Book::class), (User::class), (FavoriteBook::class), (CartItem::class)],
-    version = 7,
+    entities = [(Book::class), (FavoriteBook::class), (CartItem::class)],
+    version = 8,
     exportSchema = false
 )
 abstract class LibraryDatabase : RoomDatabase() {
 
     abstract fun bookDao(): BookDao
     abstract fun favoriteBookDao(): FavoriteBookDao
-    abstract fun userDao(): UserDao
     abstract fun cartItemDao(): CartItemDao
 
 

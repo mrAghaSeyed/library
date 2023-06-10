@@ -19,6 +19,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import ir.sharif.library.screens.LoginScreen
+import ir.sharif.library.screens.SignUpScreen
+import ir.sharif.library.screens.TermsAndConditionsScreen
 import ir.sharif.library.ui.theme.LibraryTheme
 
 sealed class BottomNavItem(
@@ -46,22 +50,46 @@ sealed class BottomNavItem(
 }
 
 const val DETAIL_ROUTE = "detail"
+const val SIGN_UP_ROUTE = "sign-up"
+const val LOGIN_ROUTE = "login"
+const val TERMS_AND_CONDITIONS_ROUTE = "terms-and-conditions"
+
 @Composable
-fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
-    NavHost(navController, startDestination = BottomNavItem.Home.route) {
+fun NavigationGraph() {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = SIGN_UP_ROUTE) {
         composable(BottomNavItem.Home.route) {
-            Home(paddingValues, hiltViewModel(), navController)
+            MainScreenView(navController, BottomNavItem.Home.name) {
+                Home(it, hiltViewModel(), navController)
+            }
         }
         composable(BottomNavItem.Cart.route) {
-            Cart(paddingValues, hiltViewModel(), navController)
+            MainScreenView(navController, BottomNavItem.Cart.name) {
+                Cart(it, hiltViewModel(), navController)
+            }
         }
         composable(BottomNavItem.Favorites.route) {
-            Favorites(paddingValues, hiltViewModel(), navController)
+            MainScreenView(navController, BottomNavItem.Favorites.name) {
+                Favorites(it, hiltViewModel(), navController)
+            }
         }
-        composable("$DETAIL_ROUTE/{bookId}") {
-            val bookId = it.arguments?.getString("bookId")?.toLong() ?: 0
-            Details(paddingValues, hiltViewModel(), bookId)
+        composable("$DETAIL_ROUTE/{bookId}") { navBackStackEntry ->
+            val bookId = navBackStackEntry.arguments?.getString("bookId")?.toLong() ?: 0
+            MainScreenView(navController, "Details") {
+                Details(it, hiltViewModel(), bookId)
+            }
         }
+
+        composable(SIGN_UP_ROUTE) {
+            SignUpScreen(navController)
+        }
+        composable(TERMS_AND_CONDITIONS_ROUTE) {
+            TermsAndConditionsScreen(navController)
+        }
+        composable(LOGIN_ROUTE) {
+            LoginScreen(navController)
+        }
+
     }
 }
 
